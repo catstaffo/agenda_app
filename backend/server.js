@@ -3,7 +3,9 @@ const express = require("express");
 const connectDB = require("./config/connectDB");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
-const Errand = require("./model/errandModel");
+const Errand = require("./models/errandModel");
+const errandRoute = require("./routes/errandRoute");
+
 
 const app = express();
 
@@ -11,20 +13,11 @@ const app = express();
 // express is an upgrade from 'logger' bc it gives us access to data from body
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(errandRoute);
 
 // creating routes
 app.get("/", (req, res) => {
     res.send("Home page");
-});
-
-// create an errand
-app.post("/api/errands", async (req, res) => {
-    try {
-        const errand = await Errand.create(req.body);
-        res.status(200).json(errand);
-    } catch (error) {
-        res.status(500).json({msg: error.msg})
-    }
 });
 
 
