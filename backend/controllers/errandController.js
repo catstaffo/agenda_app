@@ -1,3 +1,4 @@
+const { response } = require("express");
 const Errand = require("../models/errandModel");
 
 // create an errand
@@ -25,16 +26,39 @@ const getErrands = async(req, res) => {
 
 // get singular errand
 const getErrand = async(req, res) => {
-    // lets me use id in application
-    const {id} = req.params;
-   /* // RETURNS OBJECT W PROPERTY OF ID
-    console.log(req.params);
-    // only get once
-    res.send("Get single task")*/
+    try {
+        const {id} = req.params;
+        const errand = await Errand.findById(id);
+        // if errand not found in database
+        if (!errand) {
+            // yeet 404 error
+            return res.status(404).json(`Invalid Errand Id ${id}`)
+        }
+        res.status(200).json(errand);
+    } catch (error) {
+        res.status(500).json({msg: error.message});
+    }
+};
+
+// Delete errand
+const deleteErrand = async (req, res) => {
+    try {
+        const {id} = req.params;
+        // ANYTHING YOU DO INSIDE DB IS THRU MODEL
+        const errand = await Errand.findByIdAndDelete(id);
+        if (!errand) {
+            // yeet 404 error
+            return res.status(404).json(`Invalid Errand Id ${id}`);
+        }
+        res.status(200).send("Errand deleted");
+    } catch (error) {
+        res.status(500).json({msg: error.msg});
+    }
 };
 
 module.exports = {
     createErrand,
     getErrands,
-    getErrand
+    getErrand,
+    deleteErrand
 }
