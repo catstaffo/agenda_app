@@ -3,16 +3,14 @@ const express = require("express");
 const connectDB = require("./config/connectDB");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
+const Errand = require("./model/errandModel");
 
 const app = express();
 
-// this is how middleware works
-app.use(express.json())
-const logger = (req, res, next) => {
-    console.log("Middleware ran");
-    console.log(req.method);
-    next();
-};
+// middleware
+// express is an upgrade from 'logger' bc it gives us access to data from body
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 // creating routes
 app.get("/", (req, res) => {
@@ -20,9 +18,13 @@ app.get("/", (req, res) => {
 });
 
 // create an errand
-app.post("/api/errands", logger, async (req, res) => {
-    console.log(req.body);
-    res.send("Task created");
+app.post("/api/errands", async (req, res) => {
+    try {
+        const errand = await Errand.create(req.body);
+        res.status(200).json(errand);
+    } catch (error) {
+        res.status(500).json({msg: error.msg})
+    }
 });
 
 

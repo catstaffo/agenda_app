@@ -19,4 +19,4 @@ const errandSchema = mongoose.Schema(
 
 const Errand = mongoose.model("Errand", errandSchema);
 
-module.exports = Task;
+module.exports = Errand;
