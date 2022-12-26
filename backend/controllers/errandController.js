@@ -23,8 +23,18 @@ const getErrands = async(req, res) => {
     }
 };
 
+// get singular errand
+const getErrand = async(req, res) => {
+    // lets me use id in application
+    const {id} = req.params;
+   /* // RETURNS OBJECT W PROPERTY OF ID
+    console.log(req.params);
+    // only get once
+    res.send("Get single task")*/
+};
 
 module.exports = {
     createErrand,
-    getErrands
+    getErrands,
+    getErrand
 }
