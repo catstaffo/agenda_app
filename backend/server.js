@@ -13,7 +13,10 @@ const app = express();
 // express is an upgrade from 'logger' bc it gives us access to data from body
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(errandRoute);
+// refactored out:
+// app.use(errandRoute);
+// below appends /api/errands to all routes in errandRoute
+app.use("/api/errands", errandRoute);
 
 // creating routes
 app.get("/", (req, res) => {

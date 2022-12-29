@@ -4,7 +4,7 @@ const errandSchema = mongoose.Schema(
     {
     name: {
         type: String,
-        required: [true, "Please create a name"]
+        required: [true, "Please add a task"],
     },
     completed: {
         type: Boolean,

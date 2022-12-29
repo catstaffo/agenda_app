@@ -7,7 +7,7 @@ const createErrand = async (req, res) => {
         const errand = await Errand.create(req.body);
         res.status(200).json(errand);
     } catch (error) {
-        res.status(500).json({msg: error.msg});
+        res.status(500).json({msg: error.message});
     }
 };
 
@@ -52,7 +52,35 @@ const deleteErrand = async (req, res) => {
         }
         res.status(200).send("Errand deleted");
     } catch (error) {
-        res.status(500).json({msg: error.msg});
+        res.status(500).json({msg: error.message});
+    }
+};
+
+// update errand
+const updateErrand = async (req, res) => {
+    try {
+        // destructure id we get from req.params
+        const {id} = req.params;
+        // to interact w db, must go through model
+        // findById is mongoose function
+        const errand = await Errand.findByIdAndUpdate(
+            // in api, the id field is named _id
+            // the following sets the id and points it to what is coming from the params, this is first argument we give this
+            // req.body is second argument we give it
+            // last piece of info is an object: new entry into database
+            {_id: id}, req.body, {
+                new: true,
+                // if we want the model's validation to run, then we MUST SPECIFY this
+                runValidators: true
+            });
+            // if errand id does not exist:
+            if (!errand) {
+                return res.status(404).json(`No errand with id: ${id}`)
+            }
+        // 200 if successful, then json to return errand data back to user
+        res.status(200).json(errand);
+    } catch (error) {
+        res.status(500).json({msg: error.message});
     }
 };
 
@@ -60,5 +88,6 @@ module.exports = {
     createErrand,
     getErrands,
     getErrand,
-    deleteErrand
+    deleteErrand,
+    updateErrand
 }
