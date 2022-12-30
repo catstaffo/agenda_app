@@ -1,5 +1,6 @@
 const dotenv = require("dotenv").config();
 const express = require("express");
+var cors = require("cors");
 const connectDB = require("./config/connectDB");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
@@ -13,6 +14,8 @@ const app = express();
 // express is an upgrade from 'logger' bc it gives us access to data from body
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+// npm i cors to be able to use this
+app.use(cors());
 // refactored out:
 // app.use(errandRoute);
 // below appends /api/errands to all routes in errandRoute
