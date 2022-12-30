@@ -8,12 +8,12 @@ const errand = () => {
   )
 }
 
-const Errand = () => {
+const Errand = ({errand, index}) => {
   return (
     <div className="errand">
       <p>
-        <b>1.</b>
-        Task 1
+        <b>{index + 1}. </b>
+        {errand.name}
       </p>
       <div className="errand-icons">
         <FaCheckDouble color="green"/>
